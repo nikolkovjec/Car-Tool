@@ -1,0 +1,4 @@
+Scrapy~=2.0.1
+itemadapter~=0.2.0
+setuptools~=49.6.0
+itemloaders~=1.0.4

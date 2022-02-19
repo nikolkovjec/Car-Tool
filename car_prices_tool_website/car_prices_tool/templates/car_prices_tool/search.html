@@ -1,0 +1,304 @@
+{% extends 'car_prices_tool/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+
+    <br><br><br><br><br><br><br><br>
+
+    <!--Main jumbotron with all content inside-->
+    <div class="jumbotron jumbotron-fluid">
+        <!--Main container-->
+        <div class="container">
+            <h1 class="display-4">For what car are you looking?</h1>
+            <p class="lead">
+                <form action="{% url 'results' %}">
+                    <!--Required information-->
+                    <h4 class="display-8">Required information:</h4>
+                    <br>
+                    <!--Required information - MAKE-->
+                    <div class="form-group row">
+                        <label for="make" class="col-sm-2 col-form-label">Make:</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="make" id="make">
+                                {% for make in makes %}
+                                    <option value="{{ make.make }}" selected="selected">{{ make.make }}
+                                        ({{ make.entries }} records)
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <!--Required information - STATE-->
+                    <fieldset class="form-group">
+                        <div class="row">
+                            <legend class="col-form-label col-sm-2 pt-0">State:</legend>
+                            <div class="col-sm-10">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="state" id="used" value="used"
+                                           autofocus required="required">
+                                    <label class="form-check-label" for="used">Used</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="state" id="new" value="new"
+                                           required="required">
+                                    <label class="form-check-label" for="new">New</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="state" id="both" value="both"
+                                           required="required">
+                                    <label class="form-check-label" for="both">Both</label>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <br>
+
+                    <!--Optional filters-->
+            <p>
+                <button class="btn btn-primary btn-lg" type="button" data-toggle="collapse"
+                        data-target="#collapseExample"
+                        aria-expanded="false" aria-controls="collapseExample">
+                    Optional filters
+                </button>
+            </p>
+
+            <div class="collapse" id="collapseExample">
+
+                <br>
+
+                <!--Optional information - MODEL-->
+                <div class="form-group row">
+                    <label for="model" class="col-sm-2 col-form-label">Model:</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" name="model" id="model">
+                            <option value="all" selected="selected">All</option>
+                            {% for model in models %}
+                                <option value="{{ model.model }}">{{ model.model }} ({{ model.entries }} records)
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!--Optional information - OFFER TYPE-->
+                <fieldset class="form-group">
+                    <div class="row">
+                        <legend class="col-form-label col-sm-2 pt-0">Offer Type:</legend>
+                        <div class="col-sm-10">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="offer_type" id="offer_type_all"
+                                       value="all">
+                                <label class="form-check-label" for="offer_type_all">All</label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="offer_type" id="offer_type_person"
+                                       value="person">
+                                <label class="form-check-label" for="offer_type_person">Person</label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="offer_type" id="offer_type_company"
+                                       value="company">
+                                <label class="form-check-label" for="offer_type_company">Company</label>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <hr>
+
+                <!--Required information - MILEAGE-->
+                <div class="form-group row">
+                    <label for="name" class="col-sm-2 col-form-label">Mileage:</label>
+                    <div class="col-sm-10">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="mileage_less_more" id="mileage_less_than"
+                                   value="mileage_less_than">
+                            <label class="form-check-label" for="mileage_less_than">equal or less than:</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="mileage_less_more" id="mileage_more_than"
+                                   value="mileage_more_than">
+                            <label class="form-check-label" for="mileage_more_than">equal or more than:</label>
+                        </div>
+                        <input type="text" class="form-control" name="mileage" id="mileage"
+                               placeholder="(in kilometers e.g. 75000)">
+                    </div>
+                </div>
+
+                <hr>
+
+                <!--Required information - PRODUCTION YEAR-->
+                <div class="form-group row">
+                    <label for="name" class="col-sm-2 col-form-label">Production year:</label>
+                    <div class="col-sm-10">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="production_year_less_more"
+                                   id="production_year_less_than" value="production_year_less_than">
+                            <label class="form-check-label" for="production_year_less_than">equal or earlier
+                                than:</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="production_year_less_more"
+                                   id="production_year_more_than" value="production_year_more_than">
+                            <label class="form-check-label" for="production_year_more_than">equal or later than:</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="production_year_less_more"
+                                   id="production_year_exact" value="production_year_exact">
+                            <label class="form-check-label" for="production_year_exact">exact:</label>
+                        </div>
+                        <input type="text" class="form-control" name="production_year" id="production_year"
+                               placeholder="(production year e.g. 2014)">
+                    </div>
+                </div>
+
+                <hr>
+
+                <!--Required information - PRICE-->
+                <div class="form-group row">
+                    <label for="name" class="col-sm-2 col-form-label">Price:</label>
+                    <div class="col-sm-10">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="price_less_more" id="price_less_than"
+                                   value="price_less_than">
+                            <label class="form-check-label" for="price_less_than">equal or less than:</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="price_less_more" id="price_more_than"
+                                   value="price_more_than">
+                            <label class="form-check-label" for="price_more_than">equal or more than:</label>
+                        </div>
+                        <input type="text" class="form-control" name="price" id="price"
+                               placeholder="(e.g. 12500) 1 USD = 0.82 EUR | 1 EUR = 4,47 PLN | 1 PLN = 0,27 USD">
+
+                        <br>
+
+                        <!--Required information - PRICE - CURRENCY-->
+                        <select class="form-control" name="price_currency" id="price_currency">
+                            <option value="pln" selected="selected">Currency: PLN</option>
+                            <option value="usd">Currency: USD</option>
+                            <option value="eur">Currency: EUR</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <!--Required information - ENGINE CAPACITY-->
+                <div class="form-group row">
+                    <label for="name" class="col-sm-2 col-form-label">Engine Capacity:</label>
+                    <div class="col-sm-10">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="engine_capacity_less_more"
+                                   id="engine_capacity_less_than"
+                                   value="engine_capacity_less_than">
+                            <label class="form-check-label" for="engine_capacity_less_than">equal or less than:</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="engine_capacity_less_more"
+                                   id="engine_capacity_more_than"
+                                   value="engine_capacity_more_than">
+                            <label class="form-check-label" for="engine_capacity_more_than">equal or more than:</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="engine_capacity_less_more"
+                                   id="engine_capacity_equal"
+                                   value="engine_capacity_equal">
+                            <label class="form-check-label" for="engine_capacity_equal">exact:</label>
+                        </div>
+
+                        <input type="text" class="form-control" name="engine_capacity" id="engine_capacity"
+                               placeholder="(e.g. 1.4)">
+                    </div>
+                </div>
+
+                <hr>
+
+                <!--Required information - ENGINE POWER-->
+                <div class="form-group row">
+                    <label for="name" class="col-sm-2 col-form-label">Engine Power:</label>
+                    <div class="col-sm-10">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="engine_power_less_more"
+                                   id="engine_power_less_than"
+                                   value="engine_power_less_than">
+                            <label class="form-check-label" for="engine_power_less_than">less than:</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="engine_power_less_more"
+                                   id="engine_power_more_than"
+                                   value="engine_power_more_than">
+                            <label class="form-check-label" for="engine_power_more_than">more than:</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="engine_power_less_more"
+                                   id="engine_power_equal"
+                                   value="engine_power_equal">
+                            <label class="form-check-label" for="engine_power_equal">exact:</label>
+                        </div>
+
+                        <input type="text" class="form-control" name="engine_power" id="engine_power"
+                               placeholder="(in horse power e.q. 180)">
+                    </div>
+                </div>
+
+                <br>
+
+                <!--Forms Buttons-->
+                <p>
+                    <button class="btn btn-primary btn-lg" type="button" data-toggle="collapse"
+                            data-target="#collapseExample"
+                            aria-expanded="false" aria-controls="collapseExample">
+                        Optional filters
+                    </button>
+                </p>
+
+
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-success btn-lg">Search!</button>&nbsp;&nbsp;&nbsp;
+                    <button type="reset" class="btn btn-danger btn-lg">Start over</button>
+                </div>
+            </div>
+
+            <span style="font-size: 350%; ">&nbsp;&nbsp;●&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●</span>
+
+            </form>
+            </p>
+        </div>
+    </div>
+
+
+    </body>
+    </html>
+
+{% endblock %}

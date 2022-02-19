@@ -1,0 +1,63 @@
+{% extends 'car_prices_tool/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Car Prices Tool</title>
+</head>
+<body>
+<h1>Welcome on Car Prices Tool website!</h1>
+<p>Hi!</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% for car in cars %}
+    {{ car.make }}
+    <br>
+    {{ car.mileage }} KMs
+    <br><br>
+{% endfor %}
+
+<br><br><br><br>
+
+{% for car in cars_below %}
+    {{ car.make }}
+    <br>
+    {{ car.mileage }} KMs
+    <br><br>
+{% endfor %}
+
+<br><br><br><br>
+
+{% for car in cars_below_2 %}
+    {{ car.make }}
+    <br>
+    {{ car.mileage }} KMs
+    <br>
+    {{ car.price }}
+    <br><br>
+{% endfor %}
+
+</body>
+</html>
+
+{% endblock %}
