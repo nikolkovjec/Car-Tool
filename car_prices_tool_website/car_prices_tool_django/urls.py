@@ -21,5 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home),
     path('results', views.results, name='results'),
-    path('search', views.search, name='search')
+    path('search', views.search, name='search'),
+
+    path('ajax/load-cities/', views.load_models, name='ajax_load_models')
 ]
