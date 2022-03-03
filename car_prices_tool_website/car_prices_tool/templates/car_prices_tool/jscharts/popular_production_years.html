@@ -1,0 +1,23 @@
+{% load static %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js"></script>
+
+<p>
+<div class="chartjs-wrapper">
+    <canvas id="chartjs-4" class="chartjs" width="350" height="undefined"></canvas>
+
+    <script>
+        new Chart(document.getElementById("chartjs-4"), {
+            "type": "doughnut",
+            "data": {
+                "labels": {{ home_popularproductionyears_piechart.labels|safe }},
+                "datasets": [{
+                    "label": "My First Dataset",
+                    "data": {{ home_popularproductionyears_piechart.data|safe }},
+                    "backgroundColor": {{ home_popularproductionyears_piechart.charts_backgroung_colors|safe }},
+                    "borderColor": {{ home_popularproductionyears_piechart.charts_border_colors|safe }},
+                    "borderWidth": 5
+                }]
+            }
+        });</script>
+</div></p>

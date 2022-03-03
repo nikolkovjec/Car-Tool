@@ -14,14 +14,28 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from car_prices_tool import views
+import debug_toolbar
 
 urlpatterns = [
+    # Admin:
     path('admin/', admin.site.urls),
-    path('', views.home),
-    path('results', views.results, name='results'),
-    path('search', views.search, name='search'),
 
-    path('ajax/load-cities/', views.load_models, name='ajax_load_models')
+    # Templates:
+    path('', views.home, name='home'),
+    path('about', views.about, name='about'),
+    path('search', views.search, name='search'),
+    path('results', views.results, name='results'),
+    path('go_premium', views.go_premium, name='go_premium'),
+
+    # Authorization:
+    path('signup', views.sign_up_user, name='signup'),
+    path('login', views.log_in_user, name='login'),
+    path('logout', views.log_out_user, name='logout'),
+
+    # Ajax:
+    path('ajax/load-cities/', views.load_models, name='ajax_load_models'),
+
+    path(r'^__debug__', include(debug_toolbar.urls))
 ]

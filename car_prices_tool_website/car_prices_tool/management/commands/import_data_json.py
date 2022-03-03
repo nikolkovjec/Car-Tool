@@ -1,11 +1,12 @@
 import json
+import random
 from car_prices_tool.models import Car, CarMake
 from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
     def handle(self, **options):
-        with open('car_prices_tool_django/file.json', 'r', encoding='utf-8') as f:
+        with open('car_prices_tool_django/file.json', 'r') as f:
             cars = json.load(f)
 
         self.stdout.write('Deleting all CARS models data...')
@@ -34,20 +35,22 @@ class Command(BaseCommand):
             else:
                 price_dollars = car['price']
 
-            Car.objects.create(
-                make=car['make'],
-                model=car['model'],
-                model_variant=car['model_variant'],
-                production_year=car['production_year'],
-                engine_power=car['engine_power'],
-                mileage=car['mileage'],
-                engine_capacity=car['engine_capacity'],
-                offer_type=car['offer_type'],
-                price=car['price'],
-                price_currency=car['price_currency'],
-                state=car['state'],
-                price_dollars=price_dollars
-                # date_scraped=car['date_scraped']
-            )
+            if random.randint(0, 100) == 1:
+                Car.objects.create(
+                    make=car['make'],
+                    model=car.get('model'),
+                    model_variant=car.get('model_variant'),
+                    production_year=car.get('production_year'),
+                    engine_power=car.get('engine_power'),
+                    mileage=car.get('mileage'),
+                    engine_capacity=car.get('engine_capacity'),
+                    offer_type=car.get('offer_type'),
+                    price=car['price'],
+                    price_currency=car.get('price_currency'),
+                    state=car.get('state'),
+                    price_dollars=price_dollars,
+                    date_scraped=car.get('date_scraped'),
+                    date_issued=car.get('date_issued')
+                )
 
         self.stdout.write(self.style.SUCCESS('Successfully added new CARS and CAR_MAKE models data!'))

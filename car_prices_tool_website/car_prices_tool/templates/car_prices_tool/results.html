@@ -3,41 +3,71 @@
 
 {% block content %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-Results:
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+    Results:
+    This many cars matched your filters: {{ cars_amount }}
+    <br><br><br>
+    Average price: {{ average_price }}
+    <br>
+    Average mileage: {{ average_mileage }}
+    <br>
+    Average production year: {{ average_production_year }}
+    <br>
+    Average engine_power: {{ average_engine_power }}
+    <br>
+    Average engine_capacity: {{ average_engine_capacity }}
+    <br>
 
-<br><br><br>
-
-{{ filled_form }}
-
-
-
-{{make}}<br>
-{{state}}<br>
-{{model}}<br>
-{{offer_type}}<br>
-{{mileage_less_more}}<br>
-{{mileage}}<br>
-{{production_year_less_more}}<br>
-{{production_year}}<br>
-{{price_less_more}}<br>
-{{price}}<br>
-{{price_currency}}<br>
-{{engine_capacity_less_more}}<br>
-{{engine_capacity}}<br>
-{{engine_power_less_more}}<br>
-{{engine_power}}<br>
+    10 most popular model variants:
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Popularity</th>
+            <th scope="col">Model Variant</th>
+            <th scope="col">Count</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for variant in popular_model_variants %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ variant.model_variant }}</td>
+                <td>{{ variant.count }}</td>
+            </tr>
+        {% endfor %}
 
 
-{{ test_make }}
+        </tbody>
+    </table>
 
-</body>
-</html>
+
+    {{ make }}<br>
+    {{ state }}<br>
+    {{ model }}<br>
+    {{ offer_type }}<br>
+    {{ mileage_less_more }}<br>
+    {{ mileage }}<br>
+    {{ production_year_less_more }}<br>
+    {{ production_year }}<br>
+    {{ price_less_more }}<br>
+    {{ price }}<br>
+    {{ price_currency }}<br>
+    {{ engine_capacity_less_more }}<br>
+    {{ engine_capacity }}<br>
+    {{ engine_power_less_more }}<br>
+    {{ engine_power }}<br>
+
+
+    {{ test_make }}
+
+
+    </body>
+    </html>
 
 {% endblock %}

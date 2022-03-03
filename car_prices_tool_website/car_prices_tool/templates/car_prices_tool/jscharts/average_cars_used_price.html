@@ -1,0 +1,28 @@
+{% load static %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js"></script>
+
+<p>
+<div class="chartjs-wrapper">
+    {{ home_average_cars_used_price_radarchart.data|safe }}
+    <canvas id="chartjs-3" class="chartjs" width="500" height="500"></canvas>
+    <script>new Chart(document.getElementById("chartjs-3"), {
+        "type": "radar",
+        "data": {
+            "labels": {{ home_average_cars_used_info_radarchart.labels|safe }},
+            "datasets": [{
+                "label": "(used) Average PLN Price",
+                "data": {{ home_average_cars_used_info_radarchart.data_price|safe }},
+                "fill": true,
+                "backgroundColor": "rgba(255, 99, 132, 0.2)",
+                "borderColor": "rgb(255, 99, 132)",
+                "pointBackgroundColor": "rgb(255, 99, 132)",
+                "pointBorderColor": "#fff",
+                "pointHoverBackgroundColor": "#fff",
+                "pointHoverBorderColor": "rgb(255, 99, 132)",
+                "pointRadius": 5
+            }]
+        },
+        "options": {"elements": {"line": {"tension": 0, "borderWidth": 3}}}
+    });</script>
+</div></p>

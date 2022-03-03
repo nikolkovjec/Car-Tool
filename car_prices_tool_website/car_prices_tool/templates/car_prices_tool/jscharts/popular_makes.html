@@ -1,0 +1,23 @@
+{% load static %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js"></script>
+<p>
+<div class="chartjs-wrapper">
+    <canvas id="chartjs-1" class="chartjs" width="undefined" height="undefined"></canvas>
+    <script>new Chart(document.getElementById("chartjs-1"), {
+        "type": "bar",
+        "data": {
+            "labels": {{ home_popularmakes_barchart.labels|safe }},
+            "datasets": [{
+                "label": "Make amount",
+                "data": {{ home_popularmakes_barchart.data|safe }},
+                "fill": false,
+                {#"backgroundColor": ["rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)"],#}
+                "backgroundColor": {{ home_popularmakes_barchart.charts_backgroung_colors|safe }},
+                "borderColor": {{ home_popularmakes_barchart.charts_border_colors|safe }},
+                "borderWidth": 5
+            }]
+        },
+        "options": {"scales": {"yAxes": [{"ticks": {"beginAtZero": true}}]}}
+    });</script>
+</div></p>

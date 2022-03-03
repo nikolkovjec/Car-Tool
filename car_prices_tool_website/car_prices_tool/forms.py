@@ -2,6 +2,26 @@ from django import forms
 from car_prices_tool.models import Car, CarMake
 
 
+class FreeSearchCarForm(forms.Form):
+    make_choices = [('', '--- select make ---')]
+    makes = CarMake.objects.values('car_make')
+
+    for make in makes:
+        make_choices.append((make["car_make"], f'{make["car_make"]} ({Car.objects.filter(make=make["car_make"]).count()})'))
+
+    make = forms.ChoiceField(choices=make_choices)
+    make.widget.attrs.update({'class': 'form-select'})
+    state_choices = [('Used', 'Used'), ('New', 'New'), ('both', 'Both')]
+    state = forms.ChoiceField(choices=state_choices, widget=forms.RadioSelect, initial='Used')
+    state.widget.attrs.update({'class': 'form-horizontal', 'type': 'radio'})
+    models = Car.objects.values('model').distinct()
+    model_choices = [('', '--- select model ---')]
+    for model in models:
+        model_choices.append((model["model"], f'{model["model"]} ({Car.objects.filter(model=model["model"]).count()})'))
+    model = forms.ChoiceField(choices=model_choices)
+    model.widget.attrs.update({'class': 'form-select'})
+
+
 class SearchCarForm(forms.Form):
     make_choices = [('', '--- select make ---')]
     makes = CarMake.objects.values('car_make')
@@ -11,8 +31,8 @@ class SearchCarForm(forms.Form):
 
     make = forms.ChoiceField(choices=make_choices)
     make.widget.attrs.update({'class': 'form-select'})
-    state_choices = [('used', 'Used'), ('new', 'New'), ('both', 'Both')]
-    state = forms.ChoiceField(choices=state_choices, widget=forms.RadioSelect, initial='used')
+    state_choices = [('Used', 'Used'), ('New', 'New'), ('both', 'Both')]
+    state = forms.ChoiceField(choices=state_choices, widget=forms.RadioSelect, initial='Used')
     state.widget.attrs.update({'class': 'form-horizontal', 'type': 'radio'})
     # Model:
     # model_choices = []

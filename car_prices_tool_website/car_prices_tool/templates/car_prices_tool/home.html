@@ -3,61 +3,151 @@
 
 {% block content %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Car Prices Tool</title>
-</head>
-<body>
-<h1>Welcome on Car Prices Tool website!</h1>
-<p>Hi!</p>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Car Prices Tool</title>
+    </head>
+    <body>
+    <div class="jumbotron jumbotron-fluid vertical-center">
+        <div class="container">
+            <h1 class="display-4">Welcome on Car Prices Tool website!</h1>
 
+            <p class="lead">
+                Hi! Aren't you tired with searching for prices and comparisons of cars that you are interest in?
+                <br><br>
+                Looking for best price/mileage/production year proportions?
+                <br><br>
+                All that tedious research and wondering how much cheaper it would be to also consider car that is 5
+                years older and have less horse power but mileage is better?
+                <br><br>
+                Well. No more! With our tool you will be able to check all those information in just few clicks.
+                Check out our small demo here and please tell us ...
+            </p>
+            <br>
+            <div class="form-group">
+                <form method="post" id="SearchForm" data-models-url="{% url 'ajax_load_models' %}" novalidate>
 
+                    {% csrf_token %}
+                    <!--Main jumbotron with all content inside-->
 
+                    <!--Main container-->
 
+                    <h1 class="display-4">What car are you looking for?</h1>
+                    {% if quota_error %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ quota_error }}
+                        </div>
+                    {% endif %}
 
+                    <div class="row">
+                        <div class="col-sm">
+                            {{ form.make }}
+                            {{ form.make.errors }}
+                        </div>
+                        <div class="col-sm">
+                            {{ form.model }}
+                            {{ form.model.errors }}
+                        </div>
+                        <div class="col-sm">
+                            <ul id="parent">
+                                {% for choice in form.state %}
+                                    <li>
+                                        {{ choice }}
+                                        {{ choice.errors }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <br>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-success btn-lg">Search!</button>&nbsp;&nbsp;&nbsp;
+                                <button type="reset" class="btn btn-danger btn-lg">Start over</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+                <script>
+                    $("#id_make").change(function () {
+                        const url = $("#SearchForm").attr("data-models-url");  // get the url of the `load_cities` view
+                        const makeId = $(this).val();  // get the selected country ID from the HTML input
 
+                        $.ajax({                       // initialize an AJAX request
+                            url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+                            data: {
+                                'make': makeId       // add the country id to the GET parameters
+                            },
+                            success: function (data) {   // `data` is the return of the `load_cities` view function
+                                $("#id_model").html(data);  // replace the contents of the city input with the data that came from the server
+                            }
+                        });
 
+                    });
+                </script>
+            </div>
+            <br><br>
+            <h1 class="display-4">We have over 200 000 offers in our database!</h1>
+            <p class="lead">
+                Are you wondering which cars are the most popular? Well, here you go:</p>
+            {% include 'car_prices_tool/jscharts/popular_makes.html' %}
+            <br>
+            <p class="lead">
+                Maybe you are wondering which production years are the most popular? Well, here you go:</p>
+            <div class="d-flex justify-content-center">
+                <container>
+                    {% include 'car_prices_tool/jscharts/popular_production_years.html' %}
 
+                    <br><br><br>
 
+                    <div class="row">
+                        <div class="col-auto">
+                            {% include 'car_prices_tool/jscharts/average_cars_used_price.html' %}
+                        </div>
+                        <div class="col-auto">
+                            {% include 'car_prices_tool/jscharts/average_cars_used_mileage.html' %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            {% include 'car_prices_tool/jscharts/average_cars_used_enginecapacity.html' %}
+                        </div>
+                        <div class="col-auto">
+                            {% include 'car_prices_tool/jscharts/average_cars_used_enginepower.html' %}
+                        </div>
+                    </div>
+                </container>
 
+            </div>
+            <br>
 
+            <br>
 
+            <br>
 
+            <br>
 
-
-
-
-
-{% for car in cars %}
-    {{ car.make }}
-    <br>
-    {{ car.mileage }} KMs
-    <br><br>
-{% endfor %}
-
-<br><br><br><br>
-
-{% for car in cars_below %}
-    {{ car.make }}
-    <br>
-    {{ car.mileage }} KMs
-    <br><br>
-{% endfor %}
-
-<br><br><br><br>
-
-{% for car in cars_below_2 %}
-    {{ car.make }}
-    <br>
-    {{ car.mileage }} KMs
-    <br>
-    {{ car.price }}
-    <br><br>
-{% endfor %}
-
-</body>
-</html>
+            <ul>
+                <p class="lead">
+                    And if you liked what you see. <b>Please make an account to be able to not only search cars by make,
+                    model and state. </b>But also filter them by:
+                <ul>
+                    <li><u>Private or Company offers</u></li>
+                    <li><u>Mileage</u></li>
+                    <li><u>Production Year</u></li>
+                    <li><u>Engine Capacity</u></li>
+                    <li><u>Engine Power</u></li>
+                    <li><u>Price (including USD, EUR and PLN currencies!)</u></li>
+                </ul>
+                </p>
+                <br>
+                <div style="text-align: center;">
+                    <a class="btn btn-success btn-lg" href="{% url 'signup' %}" role="button">Sign Up Now!</a>
+                </div>
+                <br>
+    </body>
+    </html>
 
 {% endblock %}

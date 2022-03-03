@@ -1,0 +1,47 @@
+{% extends 'car_prices_tool/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>About</title>
+    </head>
+    <body>
+    <div class="d-flex justify-content-center">
+        <div class="jumbotron jumbotron-fluid vertical-center">
+            <div class="container">
+                <h1 class="display-4">About</h1>
+                <p class="lead">
+                    Hello! On this mockup SaaS website without registering you can search my database by make and model
+                    of the car.
+                    After you create an account and you will log in you can select various filters like price, year of
+                    production, mileage and many more. Since you created account you can use all available filters (that
+                    non registered users cannot) you can make 10 searches per 24 hours. But if you click button "Go
+                    Premium" you will be granted new "Premium" rank that will let you make 100 searches per 24 hours.
+                    It is a mockup SaaS after all.
+                    <br><br>
+                    I created this website in order to train my programming skills. In development I used
+                    Django, Python, HTML, CSS, BootStrap and a little bit of Ajax. In order to gain data for cars
+                    database I used web scraping with Scrapy and Docker for hosting my spider on VPS server.
+                    <br><br>
+                    If you would like you can check my other projects on GitHub
+                    <a href="https://github.com/m-niemiec?tab=repositories" target="_blank">here</a>.
+                    <br><br>
+                    If you would like to read more about this project (or my other projects) please visit my
+                    <a href="https://www.michalniemiec.info/" target="_blank">portfolio</a>.
+                    <br><br>
+                    If you would like to contact me, you can write at <b>michal.niemiec.it *at* gmail.com</b>
+                    <br><br>
+                    Thanks and Cheers, Michał!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    </body>
+    </html>
+
+{% endblock %}
