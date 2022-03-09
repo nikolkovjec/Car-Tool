@@ -25,8 +25,11 @@ urlpatterns = [
     # Templates:
     path('', views.home, name='home'),
     path('about', views.about, name='about'),
+    path('features', views.features, name='features'),
+    path('pricing', views.pricing, name='pricing'),
     path('search', views.search, name='search'),
     path('results', views.results, name='results'),
+    path('no_results', views.no_results, name='no_results'),
     path('go_premium', views.go_premium, name='go_premium'),
 
     # Authorization:

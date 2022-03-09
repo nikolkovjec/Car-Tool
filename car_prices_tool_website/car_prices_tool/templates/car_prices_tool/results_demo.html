@@ -1,0 +1,90 @@
+{% extends 'car_prices_tool/base.html' %}
+{% load static %}
+{% load dict_get_key_value %}
+
+{% block content %}
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+    <div class="jumbotron jumbotron-fluid vertical-center">
+        <div class="container">
+            <h1 class="display-4">Results:</h1>
+            Apparently you were looking for {{ state }} {{ make }} {{ model }} in {{ offer_type }} offer types.
+            <br>
+            This many cars matched your filters: {{ cars_amount }}.
+            <br>
+
+            <h1 class="display-6">Your results have:</h1>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Avg. Price (PLN)</th>
+                    <th scope="col">Avg. Price (USD)</th>
+                    <th scope="col">Avg. Price (EUR)</th>
+                    <th scope="col">Avg. Mileage (kms)</th>
+                    <th scope="col">Avg. Production Year</th>
+                    <th scope="col">Avg. Engine Power (HP)</th>
+                    <th scope="col">Avg. Engine Capacity (L)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ average_price }}</td>
+                    <td>{{ average_price }}</td>
+                    <td>{{ average_price }}</td>
+                    <td>{{ average_mileage }}</td>
+                    <td>{{ average_production_year }}</td>
+                    <td>{{ average_engine_power }}</td>
+                    <td>{{ average_engine_capacity }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <br>
+            <h1 class="display-6">3 most popular model variants within your results are:</h1>
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Model Variant</th>
+                    <th scope="col">Count</th>
+                    <th scope="col">Avg. Price (PLN)</th>
+                    <th scope="col">Avg. Price (USD)</th>
+                    <th scope="col">Avg. Price (EUR)</th>
+                    <th scope="col">Avg. Mileage (kms)</th>
+                    <th scope="col">Avg. Production Year</th>
+                    <th scope="col">Avg. Engine Power (HP)</th>
+                    <th scope="col">Avg. Engine Capacity (L)</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for variant in popular_model_variants %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ variant.model_variant }}</td>
+                        <td>{{ variant.count }}</td>
+                        <td>{% get_dict_key_index pmv_dict variant.model_variant 0 %}</td>
+                        <td>{% get_dict_key_index pmv_dict variant.model_variant 1 %}</td>
+                        <td>{% get_dict_key_index pmv_dict variant.model_variant 2 %}</td>
+                        <td>{% get_dict_key_index pmv_dict variant.model_variant 3 %}</td>
+                        <td>{% get_dict_key_index pmv_dict variant.model_variant 4 %}</td>
+                        <td>{% get_dict_key_index pmv_dict variant.model_variant 5 %}</td>
+                        <td>{% get_dict_key_index pmv_dict variant.model_variant 6 %}</td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+    </body>
+    </html>
+
+{% endblock %}

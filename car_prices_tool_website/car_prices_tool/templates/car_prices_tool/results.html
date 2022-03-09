@@ -1,5 +1,6 @@
 {% extends 'car_prices_tool/base.html' %}
 {% load static %}
+{% load dict_get_key_value %}
 
 {% block content %}
 
@@ -10,63 +11,196 @@
         <title>Title</title>
     </head>
     <body>
-    Results:
-    This many cars matched your filters: {{ cars_amount }}
-    <br><br><br>
-    Average price: {{ average_price }}
-    <br>
-    Average mileage: {{ average_mileage }}
-    <br>
-    Average production year: {{ average_production_year }}
-    <br>
-    Average engine_power: {{ average_engine_power }}
-    <br>
-    Average engine_capacity: {{ average_engine_capacity }}
-    <br>
+    <div class="jumbotron jumbotron-fluid vertical-center">
+        <div class="container">
+            <h1 class="display-4">Results:</h1>
+            Apparently you were looking for {{ state }} {{ make }} {{ model }} in {{ offer_type }} offer types.
 
-    10 most popular model variants:
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">Popularity</th>
-            <th scope="col">Model Variant</th>
-            <th scope="col">Count</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for variant in popular_model_variants %}
-            <tr>
-                <th scope="row">{{ forloop.counter }}</th>
-                <td>{{ variant.model_variant }}</td>
-                <td>{{ variant.count }}</td>
-            </tr>
-        {% endfor %}
+            {% if mileage %}
+                <br>
+                {% if mileage_less_more == 'mileage_less_than' %}
+                    With mileage less than {{ mileage }}.
+                {% endif %}
+                {% if mileage_less_more == 'mileage_more_than' %}
+                    With mileage more than {{ mileage }}.
+                {% endif %}
+            {% endif %}
+
+            {% if production_year %}
+                <br>
+                {% if production_year_less_more == 'production_year_less_than' %}
+                    Produced earlier than {{ production_year }}.
+                {% endif %}
+                {% if production_year_less_more == 'production_year_more_than' %}
+                    Produced later than {{ production_year }}.
+                {% endif %}
+            {% endif %}
+
+            {% if price %}
+                <br>
+                {% if price_less_more == 'price_less_than' %}
+                    With price less than {{ price }} {{ price_currency }}.
+                {% endif %}
+                {% if price_less_more == 'price_more_than' %}
+                    With price more than {{ price }} {{ price_currency }}.
+                {% endif %}
+            {% endif %}
+
+            {% if engine_capacity %}
+                <br>
+                {% if engine_capacity_less_more == 'engine_capacity_less_than' %}
+                    With engine capacity less than {{ engine_capacity }}.
+                {% endif %}
+                {% if engine_capacity_less_more == 'engine_capacity_more_than' %}
+                    With engine capacity more than {{ engine_capacity }}.
+                {% endif %}
+                {% if engine_capacity_less_more == 'engine_capacity_equal' %}
+                    With engine capacity equal to {{ engine_capacity }}.
+                {% endif %}
+            {% endif %}
+
+            {% if engine_power %}
+                <br>
+                {% if engine_power_less_more == 'engine_power_less_than' %}
+                    And engine power less than {{ engine_capacity }}.
+                {% endif %}
+                {% if engine_power_less_more == 'engine_power_more_than' %}
+                    And engine power more than {{ engine_capacity }}.
+                {% endif %}
+            {% endif %}
+            <br>
+            This many cars matched your filters: {{ cars_amount }}.
+            <br>
+
+            <h1 class="display-6">Your results have:</h1>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Avg. Price (PLN)</th>
+                    <th scope="col">Avg. Price (USD)</th>
+                    <th scope="col">Avg. Price (EUR)</th>
+                    <th scope="col">Avg. Mileage (kms)</th>
+                    <th scope="col">Avg. Production Year</th>
+                    <th scope="col">Avg. Engine Power (HP)</th>
+                    <th scope="col">Avg. Engine Capacity (L)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ average_price_pln }}</td>
+                    <td>{{ average_price_usd }}</td>
+                    <td>{{ average_price_eur }}</td>
+                    <td>{{ average_mileage }}</td>
+                    <td>{{ average_production_year }}</td>
+                    <td>{{ average_engine_power }}</td>
+                    <td>{{ average_engine_capacity }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <br>
+            <h1 class="display-6">10 most popular model variants within your results are:</h1>
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Model Variant</th>
+                    <th scope="col">Count</th>
+                    <th scope="col">Avg. Price (PLN)</th>
+                    <th scope="col">Avg. Price (USD)</th>
+                    <th scope="col">Avg. Price (EUR)</th>
+                    <th scope="col">Avg. Mileage (kms)</th>
+                    <th scope="col">Avg. Production Year</th>
+                    <th scope="col">Avg. Engine Power (HP)</th>
+                    <th scope="col">Avg. Engine Capacity (L)</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for variant in popular_model_variants %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ variant.model_variant }}</td>
+                        <td>{{ variant.count }}</td>
+                        <td>{% get_dict_key_index pmv_dict variant.model_variant 0 %}</td>
+                        <td>{% get_dict_key_index pmv_dict variant.model_variant 1 %}</td>
+                        <td>{% get_dict_key_index pmv_dict variant.model_variant 2 %}</td>
+                        <td>{% get_dict_key_index pmv_dict variant.model_variant 3 %}</td>
+                        <td>{% get_dict_key_index pmv_dict variant.model_variant 4 %}</td>
+                        <td>{% get_dict_key_index pmv_dict variant.model_variant 5 %}</td>
+                        <td>{% get_dict_key_index pmv_dict variant.model_variant 6 %}</td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+            <br>
+            <h1 class="display-6">Learn more about:</h1>
+            <div class="accordion accordion-flush" id="accordionFlushExample">
 
 
-        </tbody>
-    </table>
+                {% for model_variant in popular_model_variants %}
 
 
-    {{ make }}<br>
-    {{ state }}<br>
-    {{ model }}<br>
-    {{ offer_type }}<br>
-    {{ mileage_less_more }}<br>
-    {{ mileage }}<br>
-    {{ production_year_less_more }}<br>
-    {{ production_year }}<br>
-    {{ price_less_more }}<br>
-    {{ price }}<br>
-    {{ price_currency }}<br>
-    {{ engine_capacity_less_more }}<br>
-    {{ engine_capacity }}<br>
-    {{ engine_power_less_more }}<br>
-    {{ engine_power }}<br>
 
 
-    {{ test_make }}
+                    <div class="accordion-item">
+
+                        <h2 class="accordion-header" id="flush-heading{{ forloop.counter }}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#flush-collapse{{ forloop.counter }}" aria-expanded="false"
+                                    aria-controls="flush-collapse{{ forloop.counter }}">
+                                {{ model_variant.model_variant }}
+                            </button>
+                        </h2>
+                        <div id="flush-collapse{{ forloop.counter }}" class="accordion-collapse collapse"
+                             aria-labelledby="flush-heading{{ forloop.counter }}"
+                             data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body">
+
+                                <div class="chartjs-wrapper">
+                                    <canvas id="{{ model_variant.model_variant }}" class="chartjs" width="undefined"
+                                            height="undefined"></canvas>
+                                    <script>new Chart(document.getElementById("{{ model_variant.model_variant }}"), {
+                                        "type": "line",
+                                        "data": {
+                                            "labels": {{ years_list }},
+                                            "datasets": [{
+                                                "label": "Price (usd)",
+                                                "data": {% get_dict_key pmv_info_dict_price model_variant.model_variant %},
+                                                "fill": false,
+                                                "borderColor": "rgb(75, 192, 192)",
+                                                "lineTension": 0
+                                            },
+                                                {
+                                                    "label": "Mileage (km)",
+                                                    "data": {% get_dict_key pmv_info_dict_mileage model_variant.model_variant %},
+                                                    "fill": false,
+                                                    "borderColor": "rgb(75,94,192)",
+                                                    "lineTension": 0
+                                                }]
+                                        },
+                                        "options": {}
+                                    });</script>
+                                    <div style="text-align: center;">Production Year</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
+
+
+
+
+
+
+
+                    <br>
+                {% endfor %}
+
+            </div>
+
+        </div>
     </body>
     </html>
 

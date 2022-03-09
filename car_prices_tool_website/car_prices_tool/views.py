@@ -11,6 +11,13 @@ from django.contrib.auth import login, logout, authenticate
 from datetime import date
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Avg
+from django import template
+import pendulum
+
+register = template.Library()
+
+usd_pln = 3.73
+usd_eur = 0.82
 
 
 def home(request):
@@ -29,7 +36,7 @@ def home(request):
                 'model': filled_form.cleaned_data['model'],
             }
 
-            return render(request, 'car_prices_tool/results.html', context)
+            return results_demo(request, context)
     else:
         cars = Car.objects.filter()
         cars_below = Car.objects.filter(mileage__lte=150000)
@@ -50,6 +57,24 @@ def home(request):
 
 def about(request):
     return render(request, 'car_prices_tool/about.html')
+
+
+def features(request):
+    context = {
+        'home_popularmakes_barchart': all_jscharts.home_popularmakes_barchart(),
+        'home_popularproductionyears_piechart': all_jscharts.home_popularproductionyears_piechart(),
+        'home_average_cars_used_info_radarchart': all_jscharts.home_average_cars_used_info_radarchart()
+    }
+
+    return render(request, 'car_prices_tool/features.html', context)
+
+
+def pricing(request):
+    return render(request, 'car_prices_tool/pricing.html')
+
+
+def no_results(request):
+    return render(request, 'car_prices_tool/no_results.html')
 
 
 def go_premium(request):
@@ -253,35 +278,39 @@ def results(request, context):
     model = context.get('model')
     offer_type = context.get('offer_type')
     mileage_less_more = context.get('mileage_less_more')
-    mileage = context.get('mileage')
+    mileage = None if context.get('mileage') == '' else context.get('mileage')
     production_year_less_more = context.get('production_year_less_more')
-    production_year = context.get('production_year')
+    production_year = None if context.get('production_year') == '' else context.get('production_year')
     price_less_more = context.get('price_less_more')
-    price = context.get('price')
+    price = None if context.get('price') == '' else context.get('price')
     price_currency = context.get('price_currency')
     engine_capacity_less_more = context.get('engine_capacity_less_more')
-    engine_capacity = context.get('engine_capacity')
+    engine_capacity = None if context.get('engine_capacity') == '' else context.get('engine_capacity')
     engine_power_less_more = context.get('engine_power_less_more')
-    engine_power = context.get('engine_power')
+    engine_power = None if context.get('engine_power') == '' else context.get('engine_power')
 
-    cars = Car.objects.filter(make=make, model=model, state=state)
+    filters = {}
 
-    if offer_type != 'all':
-        cars = cars.filter(offer_type=offer_type)
+    filters['make'] = make
+    filters['model'] = model
+    filters['state'] = state
+
+    if offer_type:
+        filters['offer_type'] = offer_type
 
     if mileage:
         if mileage_less_more == 'mileage_less_than':
-            cars = cars.filter(price__lte=mileage)
+            filters['mileage__lte'] = mileage
         if mileage_less_more == 'mileage_more_than':
-            cars = cars.filter(price__gte=mileage)
+            filters['mileage__gte'] = mileage
 
     if production_year:
         if production_year_less_more == 'production_year_less_than':
-            cars = cars.filter(production_year__lte=production_year)
+            filters['production_year__lte'] = production_year
         if production_year_less_more == 'production_year_more_than':
-            cars = cars.filter(production_year__gte=production_year)
+            filters['production_year__gte'] = production_year
         if production_year_less_more == 'production_year_exact':
-            cars = cars.filter(production_year=production_year)
+            filters['production_year'] = production_year
 
     if price:
         if price_currency != 'USD':
@@ -291,51 +320,99 @@ def results(request, context):
                 price = price * 1.21
 
         if price_less_more == 'price_less_than':
-            cars = cars.filter(price_dollars__lte=price)
+            filters['price_dollars__lte'] = price
         if price_less_more == 'price_more_than':
-            cars = cars.filter(price_dollars__gte=price)
+            filters['price_dollars__gte'] = price
 
     if engine_capacity:
         if engine_capacity_less_more == 'engine_capacity_less_than':
-            cars = cars.filter(engine_power__lte=engine_power)
+            filters['engine_power__lte'] = engine_power
         if engine_capacity_less_more == 'engine_capacity_more_than':
-            cars = cars.filter(engine_power__gte=engine_power)
+            filters['engine_power__gte'] = engine_power
         if engine_capacity_less_more == 'engine_capacity_equal':
-            cars = cars.filter(engine_power=engine_power)
+            filters['engine_power'] = engine_power
 
     if engine_power:
         if engine_power_less_more == 'engine_power_less_than':
-            cars = cars.filter(engine_capacity__lte=engine_capacity)
+            filters['engine_capacity__lte'] = engine_capacity
         if engine_power_less_more == 'engine_power_more_than':
-            cars = cars.filter(engine_capacity__gte=engine_capacity)
+            filters['engine_capacity__gte'] = engine_capacity
         if engine_power_less_more == 'engine_power_equal':
-            cars = cars.filter(engine_capacity=engine_capacity)
+            filters['engine_capacity'] = engine_capacity
 
-    cars_amount = cars.count()
+    cars = Car.objects.filter(**filters)
 
-    average_price = '{:.2f}'.format(cars.aggregate(Avg('price'))['price__avg'])
+    cars_amount = len(cars)
+    print(len(cars))
+
+    if len(cars) == 0:
+        return render(request, 'car_prices_tool/no_results.html')
+
+    average_price_usd = '{:.2f}'.format(cars.aggregate(Avg('price_dollars'))['price_dollars__avg'])
+    average_price_pln = '{:.2f}'.format(cars.aggregate(Avg('price_dollars'))['price_dollars__avg'] * usd_pln)
+    average_price_eur = '{:.2f}'.format(cars.aggregate(Avg('price_dollars'))['price_dollars__avg'] * usd_eur)
     average_mileage = '{:.2f}'.format(cars.aggregate(Avg('mileage'))['mileage__avg'])
     average_production_year = int(cars.aggregate(Avg('production_year'))['production_year__avg'])
     average_engine_power = int(cars.aggregate(Avg('engine_power'))['engine_power__avg'])
     average_engine_capacity = '{:.2f}'.format(cars.aggregate(Avg('engine_capacity'))['engine_capacity__avg'])
 
-    popular_model_variants = cars.values('model_variant').annotate(count=Count('model_variant')).order_by('count').reverse()[:10]
+    popular_model_variants = cars.filter(model_variant__isnull=False).values('model_variant').annotate(count=Count('model_variant')).order_by('count').reverse()[:10]
 
-    # for popular_model_variant in popular_model_variants:
-    #     f'{popular_model_variant}' = '{:.2f}'.format(cars.aggregate(Avg('price'))['price__avg'])
-    #     model_variants_average_mileage = '{:.2f}'.format(cars.aggregate(Avg('mileage'))['mileage__avg'])
-    #     model_variants_average_production_year = int(cars.aggregate(Avg('production_year'))['production_year__avg'])
-    #     model_variants_average_engine_power = int(cars.aggregate(Avg('engine_power'))['engine_power__avg'])
-    #     model_variants_average_engine_capacity = '{:.2f}'.format(cars.aggregate(Avg('engine_capacity'))['engine_capacity__avg'])
+    pmv_dict = {}
+
+    for pmv in popular_model_variants:
+        pmv_dict[f'{pmv["model_variant"]}'] = []
+        pmv_dict[f'{pmv["model_variant"]}'].append('{:.2f}'.format(cars.filter(model_variant=pmv["model_variant"]).aggregate(Avg('price_dollars'))['price_dollars__avg'] * usd_pln))
+        pmv_dict[f'{pmv["model_variant"]}'].append('{:.2f}'.format(cars.filter(model_variant=pmv["model_variant"]).aggregate(Avg('price_dollars'))['price_dollars__avg']))
+        pmv_dict[f'{pmv["model_variant"]}'].append('{:.2f}'.format(cars.filter(model_variant=pmv["model_variant"]).aggregate(Avg('price_dollars'))['price_dollars__avg'] * usd_eur))
+        pmv_dict[f'{pmv["model_variant"]}'].append(int(cars.filter(model_variant=pmv["model_variant"]).aggregate(Avg('mileage'))['mileage__avg']))
+        pmv_dict[f'{pmv["model_variant"]}'].append(int(cars.filter(model_variant=pmv["model_variant"]).aggregate(Avg('production_year'))['production_year__avg']))
+        pmv_dict[f'{pmv["model_variant"]}'].append(int(cars.filter(model_variant=pmv["model_variant"]).aggregate(Avg('engine_power'))['engine_power__avg']))
+        pmv_dict[f'{pmv["model_variant"]}'].append('{:.2f}'.format(cars.filter(model_variant=pmv["model_variant"]).aggregate(Avg('engine_capacity'))['engine_capacity__avg']))
+
+    pmv_info_dict = {}
+
+    pmv_info_dict_price = {}
+    pmv_info_dict_mileage = {}
+
+    current_year = pendulum.now('UTC')
+    period = pendulum.period(current_year.subtract(years=10), current_year)
+    years_list = []
+
+    for year in period.range('years'):
+        years_list.append(year.year)
+
+    for pmv in popular_model_variants:
+        pmv_info_dict_price[f'{pmv["model_variant"]}'] = []
+        pmv_info_dict_mileage[f'{pmv["model_variant"]}'] = []
+        for year in period.range('years'):
+            price = cars.filter(model_variant=pmv["model_variant"], production_year=year.year).aggregate(Avg('price_dollars'))['price_dollars__avg']
+            if price:
+                pmv_info_dict_price[f'{pmv["model_variant"]}'].append(price)
+            else:
+                pmv_info_dict_price[f'{pmv["model_variant"]}'].append(0)
+
+            mileage = cars.filter(model_variant=pmv["model_variant"], production_year=year.year).aggregate(Avg('mileage'))['mileage__avg']
+            if mileage:
+                pmv_info_dict_mileage[f'{pmv["model_variant"]}'].append(mileage)
+            else:
+                pmv_info_dict_mileage[f'{pmv["model_variant"]}'].append(0)
 
     context = {
+        'years_list': years_list,
+        'pmv_info_dict': pmv_info_dict,
+        'pmv_info_dict_price': pmv_info_dict_price,
+        'pmv_info_dict_mileage': pmv_info_dict_mileage,
         'cars_amount': cars_amount,
-        'average_price': average_price,
+        'average_price_usd': average_price_usd,
+        'average_price_pln': average_price_pln,
+        'average_price_eur': average_price_eur,
         'average_mileage': average_mileage,
         'average_production_year': average_production_year,
         'average_engine_power': average_engine_power,
         'average_engine_capacity': average_engine_capacity,
         'popular_model_variants': popular_model_variants,
+        'pmv_dict': pmv_dict,
         'make': context.get('make'),
         'state': context.get('state'),
         'model': context.get('model'),
@@ -354,3 +431,45 @@ def results(request, context):
     }
 
     return render(request, 'car_prices_tool/results.html', context)
+
+
+def results_demo(request, context):
+    make = context.get('make')
+    state = context.get('state')
+    model = context.get('model')
+
+    cars = Car.objects.filter(make=make, model=model, state=state)
+
+    cars_amount = cars.count()
+
+    average_price = '{:.2f}'.format(cars.aggregate(Avg('price'))['price__avg'])
+    average_mileage = '{:.2f}'.format(cars.aggregate(Avg('mileage'))['mileage__avg'])
+    average_production_year = int(cars.aggregate(Avg('production_year'))['production_year__avg'])
+    average_engine_power = int(cars.aggregate(Avg('engine_power'))['engine_power__avg'])
+    average_engine_capacity = '{:.2f}'.format(cars.aggregate(Avg('engine_capacity'))['engine_capacity__avg'])
+
+    popular_model_variants = cars.values('model_variant').annotate(count=Count('model_variant')).order_by('count').reverse()[:3]
+    pmv_dict = {}
+
+    for pmv in popular_model_variants:
+        pmv_dict[f'{pmv["model_variant"]}'] = []
+        pmv_dict[f'{pmv["model_variant"]}'].append('{:.2f}'.format(cars.filter(model_variant=pmv["model_variant"]).aggregate(Avg('price_dollars'))['price_dollars__avg'] * usd_pln))
+        pmv_dict[f'{pmv["model_variant"]}'].append('{:.2f}'.format(cars.filter(model_variant=pmv["model_variant"]).aggregate(Avg('price_dollars'))['price_dollars__avg']))
+        pmv_dict[f'{pmv["model_variant"]}'].append('{:.2f}'.format(cars.filter(model_variant=pmv["model_variant"]).aggregate(Avg('price_dollars'))['price_dollars__avg'] * usd_eur))
+        pmv_dict[f'{pmv["model_variant"]}'].append(int(cars.filter(model_variant=pmv["model_variant"]).aggregate(Avg('mileage'))['mileage__avg']))
+        pmv_dict[f'{pmv["model_variant"]}'].append(int(cars.filter(model_variant=pmv["model_variant"]).aggregate(Avg('production_year'))['production_year__avg']))
+        pmv_dict[f'{pmv["model_variant"]}'].append(int(cars.filter(model_variant=pmv["model_variant"]).aggregate(Avg('engine_power'))['engine_power__avg']))
+        pmv_dict[f'{pmv["model_variant"]}'].append('{:.2f}'.format(cars.filter(model_variant=pmv["model_variant"]).aggregate(Avg('engine_capacity'))['engine_capacity__avg']))
+
+    context = {
+        'cars_amount': cars_amount,
+        'average_price': average_price,
+        'average_mileage': average_mileage,
+        'average_production_year': average_production_year,
+        'average_engine_power': average_engine_power,
+        'average_engine_capacity': average_engine_capacity,
+        'popular_model_variants': popular_model_variants,
+        'pmv_dict': pmv_dict,
+    }
+
+    return render(request, 'car_prices_tool/results_demo.html', context)

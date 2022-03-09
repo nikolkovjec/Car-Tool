@@ -78,7 +78,7 @@ class SearchCarForm(forms.Form):
     # Price:
     price_less_more_choices = [('price_less_than', 'Equal or cheaper than:'),
                                ('price_more_than', 'Equal or more expensive than:')]
-    price_less_more = forms.ChoiceField(choices=production_year_less_more_choices, required=False)
+    price_less_more = forms.ChoiceField(choices=price_less_more_choices, required=False)
     price_less_more.widget.attrs.update({'class': 'form-select'})
     price = forms.IntegerField(required=False)
     price.widget.attrs.update({'class': 'form-control', 'placeholder': '(e.q. 12500)'})

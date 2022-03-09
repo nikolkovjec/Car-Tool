@@ -1,0 +1,87 @@
+{% extends 'car_prices_tool/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Car Prices Tool - Features</title>
+    </head>
+    <body>
+    <br><br><br>
+    <div class="jumbotron jumbotron-fluid vertical-center">
+        <div class="container">
+
+            <h1 class="display-4">We have over 200 000 offers in our database!</h1>
+            <br><br>
+            <h1 class="display-6">Are you wondering which cars are the most popular? Well, here you go:</h1>
+            <br>
+            {% include 'car_prices_tool/jscharts/popular_makes.html' %}
+            <br><br>
+            <h1 class="display-6">Maybe you would like to see other charts? Well, here you go:</h1>
+            <br>
+            <div style="text-align: center;"><p class="lead">
+                Are you wondering which production years are the most popular? Check this out:</p></div>
+            <div class="d-flex justify-content-center">
+                <container>
+                    {% include 'car_prices_tool/jscharts/popular_production_years.html' %}
+
+                    <br><br><br>
+                    <div style="text-align: center;"><p class="lead">
+                        Comparisons between different makes? Here they are:</p></div>
+
+                    <div class="row">
+                        <div class="col-auto">
+                            {% include 'car_prices_tool/jscharts/average_cars_used_price.html' %}
+                        </div>
+                        <div class="col-auto">
+                            {% include 'car_prices_tool/jscharts/average_cars_used_mileage.html' %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            {% include 'car_prices_tool/jscharts/average_cars_used_enginecapacity.html' %}
+                        </div>
+                        <div class="col-auto">
+                            {% include 'car_prices_tool/jscharts/average_cars_used_enginepower.html' %}
+                        </div>
+                    </div>
+                </container>
+
+            </div>
+            <br>
+
+            <br>
+
+            <br>
+
+            <br>
+
+            <ul>
+                <p class="lead">
+                    But if you are interested in real, useful data, make an account to be able to not only search cars
+                    by make, model and state. But also filter them by:
+                <ul>
+                    <li>Private or Company offers</li>
+                    <li>Mileage</li>
+                    <li>Production Year</li>
+                    <li>Engine Capacity</li>
+                    <li>Engine Power</li>
+                    <li>Price (including USD, EUR and PLN currencies!)</li>
+                </ul>
+
+                </p>
+            </ul>
+            <br>
+            <div style="text-align: center;">
+                <a class="btn btn-success btn-lg" href="{% url 'signup' %}" role="button">Sign Up Now!</a>
+            </div>
+            <br>
+        </div>
+    </div>
+    </body>
+    </html>
+
+{% endblock %}

@@ -39,6 +39,17 @@ margin-left: 10px;
 
 }
 
+.wide-button {
+    width: 20vw !important;
+}
+
+
+.navbar-text {
+    float:none;
+    margin:0 auto;
+    display: block;
+    text-align: center;
+}
 /*button{*/
 /*margin: 50px !important;*/
 /*}*/
