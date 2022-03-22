@@ -1,3 +1,22 @@
+@media only screen and (max-width: 600px) {
+    .table {
+        table-layout:fixed;
+        font-size: 50% !important;
+    }
+
+    .td {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .container {
+        margin-top: 0px !important;
+        margin-bottom: 0px !important;
+    }
+}
+
 #parent {
     list-style: none;
     width: 100%;
@@ -23,8 +42,59 @@ input[type="radio"] {
 }
 
 .vertical-center {
-  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-  min-height: 100vh;
+    min-height: 90% !important; /* Fallback for browsers do NOT support vh unit */
+    min-height: 90vh !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.container {
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+body > .navbar .btn-outline-danger {
+    margin-left: 10px;
+    margin-top: 1px;
+}
+
+body > .navbar .btn-success {
+    margin-left: 10px;
+
+}
+
+.wide-button {
+    width: 20vw !important;
+}
+
+.navbar-text {
+    float: none;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+}
+
+#tires {
+    background: #000000;
+    width: 50px;
+    height: 50px;
+    margin-top: 10px;
+    margin-left: 30px;
+    margin-right: 60px;
+    border-radius: 50%;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.row-chart-js {
   display: flex;
-  align-items: center;
+  justify-content: center;
+}
+
+.alert-info {
+    font-size: 1.5rem;
+}
+
+.alert-success {
+    font-size: 1.5rem;
 }

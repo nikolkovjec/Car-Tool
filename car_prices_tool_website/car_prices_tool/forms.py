@@ -1,54 +1,77 @@
 from django import forms
-from car_prices_tool.models import Car, CarMake
+from django.db.models import Count
+
+from car_prices_tool.models import Car
 
 
 class FreeSearchCarForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(FreeSearchCarForm, self).__init__(*args, **kwargs)
+        self.fields['make'].choices = self.generate_makes
+        self.fields['model'].choices = self.generate_models
+
+    def generate_makes(self):
+        list_makes = [('', '--- select make ---')]
+        for make in self.makes:
+            list_makes.append((make["make"], f'{make["make"]}'))
+
+        return list_makes
+
+    def generate_models(self):
+        list_models = [('', '<-- please select make <--')]
+        for model in self.models:
+            list_models.append((model["model"], f'{model["model"]}'))
+
+        return list_models
+
     make_choices = [('', '--- select make ---')]
-    makes = CarMake.objects.values('car_make')
-
-    for make in makes:
-        make_choices.append((make["car_make"], f'{make["car_make"]} ({Car.objects.filter(make=make["car_make"]).count()})'))
-
+    makes = Car.objects.values('make').annotate(count=Count('make')).order_by('count').distinct().reverse()
     make = forms.ChoiceField(choices=make_choices)
     make.widget.attrs.update({'class': 'form-select'})
+
     state_choices = [('Used', 'Used'), ('New', 'New'), ('both', 'Both')]
     state = forms.ChoiceField(choices=state_choices, widget=forms.RadioSelect, initial='Used')
     state.widget.attrs.update({'class': 'form-horizontal', 'type': 'radio'})
-    models = Car.objects.values('model').distinct()
-    model_choices = [('', '--- select model ---')]
-    for model in models:
-        model_choices.append((model["model"], f'{model["model"]} ({Car.objects.filter(model=model["model"]).count()})'))
+
+    models = Car.objects.values('model').annotate(count=Count('model')).order_by('count').distinct().reverse()
+    model_choices = [('', '<-- please select make <--')]
     model = forms.ChoiceField(choices=model_choices)
     model.widget.attrs.update({'class': 'form-select'})
 
 
 class SearchCarForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(SearchCarForm, self).__init__(*args, **kwargs)
+        self.fields['make'].choices = self.generate_makes
+        self.fields['model'].choices = self.generate_models
+
+    def generate_makes(self):
+        list_makes = [('', '--- select make ---')]
+        for make in self.makes:
+            list_makes.append((make["make"], f'{make["make"]}'))
+
+        return list_makes
+
+    def generate_models(self):
+        list_models = [('', '<-- please select make <--')]
+        for model in self.models:
+            list_models.append((model["model"], f'{model["model"]}'))
+
+        return list_models
+
     make_choices = [('', '--- select make ---')]
-    makes = CarMake.objects.values('car_make')
-
-    for make in makes:
-        make_choices.append((make["car_make"], f'{make["car_make"]} ({Car.objects.filter(make=make["car_make"]).count()})'))
-
+    makes = Car.objects.values('make').annotate(count=Count('make')).order_by('count').distinct().reverse()
     make = forms.ChoiceField(choices=make_choices)
     make.widget.attrs.update({'class': 'form-select'})
+
     state_choices = [('Used', 'Used'), ('New', 'New'), ('both', 'Both')]
     state = forms.ChoiceField(choices=state_choices, widget=forms.RadioSelect, initial='Used')
     state.widget.attrs.update({'class': 'form-horizontal', 'type': 'radio'})
-    # Model:
-    # model_choices = []
-    models = Car.objects.values('model').distinct()
-    # for model in models:
-    #     model_choices.append((model["model"], f'{model["model"]} ({Car.objects.filter(model=model["model"]).count()})'))
-    # model = forms.ChoiceField(choices=model_choices)
 
-    model_choices = [('', '--- select model ---')]
-    for model in models:
-        model_choices.append((model["model"], f'{model["model"]} ({Car.objects.filter(model=model["model"]).count()})'))
+    models = Car.objects.values('model').annotate(count=Count('model')).order_by('count').distinct().reverse()
+    model_choices = [('', '<-- please select make <--')]
     model = forms.ChoiceField(choices=model_choices)
     model.widget.attrs.update({'class': 'form-select'})
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.fields['model'].queryset = CarMake.objects.none()
 
     # Offer type:
     offer_type_choices = [('all', 'All'),
@@ -62,7 +85,6 @@ class SearchCarForm(forms.Form):
                                  ('mileage_more_than', 'Mileage equal or more than:')]
     mileage_less_more = forms.ChoiceField(choices=mileage_less_more_choices, required=False)
     mileage_less_more.widget.attrs.update({'class': 'form-select'})
-
     mileage = forms.IntegerField(required=False)
     mileage.widget.attrs.update({'class': 'form-control', 'placeholder': '(e.q. 75000) in KMs'})
 

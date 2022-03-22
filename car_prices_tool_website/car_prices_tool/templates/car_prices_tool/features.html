@@ -10,11 +10,10 @@
         <title>Car Prices Tool - Features</title>
     </head>
     <body>
-    <br><br><br>
     <div class="jumbotron jumbotron-fluid vertical-center">
         <div class="container">
-
-            <h1 class="display-4">We have over 200 000 offers in our database!</h1>
+            <h1 class="display-4">We have over 198 500 offers in our database!</h1>
+            <p><i>Unfortunately, to speed things up on free hosting there is roughly 10% of data currently available  online.</i></p>
             <br><br>
             <h1 class="display-6">Are you wondering which cars are the most popular? Well, here you go:</h1>
             <br>
@@ -32,7 +31,7 @@
                     <div style="text-align: center;"><p class="lead">
                         Comparisons between different makes? Here they are:</p></div>
 
-                    <div class="row">
+                    <div class="row row-chart-js">
                         <div class="col-auto">
                             {% include 'car_prices_tool/jscharts/average_cars_used_price.html' %}
                         </div>
@@ -40,7 +39,7 @@
                             {% include 'car_prices_tool/jscharts/average_cars_used_mileage.html' %}
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row row-chart-js">
                         <div class="col-auto">
                             {% include 'car_prices_tool/jscharts/average_cars_used_enginecapacity.html' %}
                         </div>
@@ -53,32 +52,27 @@
             </div>
             <br>
 
-            <br>
+            <br><br><br>
 
-            <br>
-
-            <br>
-
+            <p class="lead">
+                But if you are interested in real, useful data, make an account to be able to not only search cars
+                by make, model and state. But also filter them by:
             <ul>
-                <p class="lead">
-                    But if you are interested in real, useful data, make an account to be able to not only search cars
-                    by make, model and state. But also filter them by:
-                <ul>
-                    <li>Private or Company offers</li>
-                    <li>Mileage</li>
-                    <li>Production Year</li>
-                    <li>Engine Capacity</li>
-                    <li>Engine Power</li>
-                    <li>Price (including USD, EUR and PLN currencies!)</li>
-                </ul>
-
-                </p>
+                <li>Private or Company offers</li>
+                <li>Mileage</li>
+                <li>Production Year</li>
+                <li>Engine Capacity</li>
+                <li>Engine Power</li>
+                <li>Price (including USD, EUR and PLN currencies!)</li>
             </ul>
+            </p>
+
             <br>
-            <div style="text-align: center;">
-                <a class="btn btn-success btn-lg" href="{% url 'signup' %}" role="button">Sign Up Now!</a>
-            </div>
-            <br>
+            {% if not user.is_authenticated %}
+                <div style="text-align: center;">
+                    <a class="btn btn-success btn-lg" href="{% url 'signup' %}" role="button">Sign Up Now!</a>
+                </div>
+            {% endif %}
         </div>
     </div>
     </body>

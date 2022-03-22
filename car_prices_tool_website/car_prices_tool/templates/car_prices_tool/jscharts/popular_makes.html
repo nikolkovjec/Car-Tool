@@ -1,10 +1,8 @@
 {% load static %}
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js"></script>
-<p>
 <div class="chartjs-wrapper">
-    <canvas id="chartjs-1" class="chartjs" width="undefined" height="undefined"></canvas>
-    <script>new Chart(document.getElementById("chartjs-1"), {
+    <canvas id="popular_makes" class="chartjs" width="undefined" height="undefined"></canvas>
+    <script>new Chart(document.getElementById("popular_makes"), {
         "type": "bar",
         "data": {
             "labels": {{ home_popularmakes_barchart.labels|safe }},
@@ -20,4 +18,4 @@
         },
         "options": {"scales": {"yAxes": [{"ticks": {"beginAtZero": true}}]}}
     });</script>
-</div></p>
+</div>

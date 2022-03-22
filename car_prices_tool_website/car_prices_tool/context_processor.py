@@ -1,7 +1,9 @@
-from .models import UserPremiumRank, UserSearchQuery
 from datetime import date
 
+from .models import UserPremiumRank, UserSearchQuery
 
+
+# Used for navbar.
 def add_variable_to_context(request):
     if request.user.is_authenticated:
         try:
@@ -11,6 +13,8 @@ def add_variable_to_context(request):
 
         if user_rank_name.get('rank') == 'Premium':
             user_rank_name = 'Premium'
+        elif user_rank_name.get('rank') == 'APIPRO':
+            user_rank_name = 'API Pro'
         if not user_rank_name:
             user_rank_name = 'Free'
 

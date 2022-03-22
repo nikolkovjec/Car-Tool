@@ -1,30 +1,31 @@
 import re
+
 import scrapy
-from itemloaders.processors import Join, MapCompose, TakeFirst
+from itemloaders.processors import Join, MapCompose
 
 
 def clean_item(item):
-    item = re.sub(r'\s+', ' ', str(item)).strip()
-    return item
+    if item:
+        item = re.sub(r'\s+', ' ', str(item)).strip()
+        return item
 
 
 def remove_spaces(item):
-    item = str(item).replace(' ', '')
-    return item
+    if item:
+        item = str(item).replace(' ', '')
+        return item
 
 
 def convert_to_int(item):
-    item = int(item)
-    return item
+    if item:
+        item = int(float(str(item).replace(',', '.')))
+        return item
 
 
 def convert_to_float(item):
-    item = float(item)
-    return item
-
-
-
-offerCountNew = scrapy.Field(input_processor=MapCompose(lambda x: process_float_or_int(x)), output_processor=TakeFirst())
+    if item:
+        item = float(item)
+        return item
 
 
 class Car(scrapy.Item):
@@ -88,5 +89,14 @@ class Car(scrapy.Item):
         input_processor=MapCompose(clean_item, remove_spaces),
         output_processor=Join()
     )
+    # Date in a string format 'DD/MM/YYYY'
+    date_issued = scrapy.Field(
+        input_processor=MapCompose(clean_item, remove_spaces),
+        output_processor=Join()
+    )
     # Standard pendulum now string
-    date_scraped = scrapy.Field()
+    date_scraped = scrapy.Field(
+        output_processor=Join()
+    )
+    # Check if car is not damaged (if damaged is True pipeline will drop item)
+    damaged = scrapy.Field()

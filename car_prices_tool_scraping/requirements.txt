@@ -2,3 +2,7 @@ Scrapy~=2.0.1
 itemadapter~=0.2.0
 setuptools~=49.6.0
 itemloaders~=1.0.4
+Twisted==20.3.0
+scrapy-random-useragent==0.2
+scrapy-rotating-proxies==0.6.2
+Pendulum~=2.1.2

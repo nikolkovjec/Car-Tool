@@ -1,0 +1,56 @@
+{% extends 'car_prices_tool/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Sign Up</title>
+    </head>
+    <body>
+
+    <div class="jumbotron jumbotron-fluid vertical-center">
+        <div class="container">
+            <div class="d-flex justify-content-center">
+                <div class="row w-75">
+                    <div class="col-md-12">
+                        {% if error %}
+                            <div style="text-align: center;">
+                                <div class="alert alert-danger" role="alert">{{ error }}</div>
+                            </div>
+                        {% endif %}
+                        <h1>Sign Up:</h1><br>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Username:</label>
+                                <input type="text" class="form-control" name="username" aria-describedby="emailHelp"
+                                       placeholder="Enter username. It will be visible for others." required>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Password:</label>
+                                <input type="password" class="form-control" name="password1" id="exampleInputPassword1"
+                                       placeholder="Password. Please make it strong and unique." required>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Confirm Password:</label>
+                                <input type="password" class="form-control" name="password2" id="exampleInputPassword1"
+                                       placeholder="Repeat password from above." required>
+                            </div>
+                            <br>
+                            <button type="submit" class="btn btn-lg btn-success">Sign Up</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </body>
+    </html>
+
+{% endblock %}

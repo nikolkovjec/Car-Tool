@@ -13,7 +13,6 @@
     <div class="jumbotron jumbotron-fluid vertical-center">
         <div class="container">
             <h1 class="display-4">Welcome on Car Prices Tool website!</h1>
-
             <p class="lead">
                 Hi! Aren't you tired with searching for prices and comparisons of cars that you are interest in?
                 Looking for best price/mileage/production year proportions?
@@ -27,13 +26,9 @@
             <br><br>
             <div class="form-group">
                 <form method="post" id="SearchForm" data-models-url="{% url 'ajax_load_models' %}" novalidate>
-
                     {% csrf_token %}
-                    <!--Main jumbotron with all content inside-->
-
-                    <!--Main container-->
-
                     <h1 class="display-4">What car are you looking for?</h1>
+
                     {% if quota_error %}
                         <div class="alert alert-danger" role="alert">
                             {{ quota_error }}
@@ -51,12 +46,14 @@
                         </div>
                         <div class="col-sm">
                             <ul id="parent">
+
                                 {% for choice in form.state %}
                                     <li>
                                         {{ choice }}
                                         {{ choice.errors }}
                                     </li>
                                 {% endfor %}
+
                             </ul>
                             <br>
                         </div>
@@ -68,40 +65,39 @@
                         </div>
                     </div>
                 </form>
-                <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+                {#Ajax call for loading up models based on selected make.#}
                 <script>
                     $("#id_make").change(function () {
-                        const url = $("#SearchForm").attr("data-models-url");  // get the url of the `load_cities` view
-                        const makeId = $(this).val();  // get the selected country ID from the HTML input
+                        const url = $("#SearchForm").attr("data-models-url");
+                        const makeId = $(this).val();
 
-                        $.ajax({                       // initialize an AJAX request
-                            url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+                        $.ajax({
+                            url: url,
                             data: {
-                                'make': makeId       // add the country id to the GET parameters
+                                'make': makeId
                             },
-                            success: function (data) {   // `data` is the return of the `load_cities` view function
-                                $("#id_model").html(data);  // replace the contents of the city input with the data that came from the server
+                            success: function (data) {
+                                $("#id_model").html(data);
                             }
                         });
 
                     });
                 </script>
             </div>
-            <br><br><br>
-            <p class="lead">If you are ready for <b>full</b> version, please <a href="{% url 'signup' %}" role="button">Create Free Account Here!</a>
-
-
-{#            <nav class="navbar fixed-bottom navbar-light bg-light">#}
-{#                <div class="container-fluid">#}
-{#                <span class="navbar-text">#}
-{#                <button type="button" class="btn btn-outline-success btn-lg wide-button">Create Free Account</button>#}
-{#                <button type="button" class="btn btn-outline-secondary btn-lg wide-button">Check out Features</button>#}
-{#                <button type="button" class="btn btn-outline-secondary btn-lg wide-button">See Pricing</button>#}
-{##}
-{#                </span>#}
-{#                </div>#}
-{#            </nav>#}
-
+            <br><br>
+            {% if not user.is_authenticated %}
+                <div class="alert alert-info" role="alert">
+                    To see <b>additional filters</b> please
+                        <a href="{% url 'signup' %}" class="alert-link">Create Free Account Here!</a>
+                </div>
+                    {% else %}
+                <div class="alert alert-success" role="alert">
+                    Use <b>full</b> version with many additional filters
+                        <a href="{% url 'search' %}" class="alert-link">here!</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
     </body>
     </html>
 
