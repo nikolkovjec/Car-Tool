@@ -11,117 +11,119 @@
     </head>
     <body>
 
-    <div class="jumbotron jumbotron-fluid vertical-center">
-        <div class="container">
-            <h1 class="display-4">API Documentation:</h1>
-            <p class="lead">
-                Here are two ways that you can access our API.<br><br>
-                Through CURL Request:<br>
-                <code>
-                    curl -X "GET" https://carpricestool.eu.pythonanywhere.com/api/cars/results<br>
-                    -H "Content-Type: application/json"<br>
-                    -H "Authorization: Token YOURTOKEN"<br>
-                    -d 'filter1=value1'<br>
-                    -d 'filter2=value2'<br>
-                    -d 'filter3=value3'
-                </code>
-                <br><br>
-                Through URL Request:<br>
-                <code>
-                    https://carpricestool.eu.pythonanywhere.com/api/cars/results?auth_token=YOURTOKEN&filter1=value1&filter2=value2&filter3=value3
-                </code>
-                <br><br>
-                Following filters are available:<br>
+    <div class="d-flex justify-content-center">
+        <div class="jumbotron jumbotron-fluid vertical-center">
+            <div class="container">
+                <h1 class="display-4">API Documentation:</h1>
+                <p class="lead">
+                    Here are two ways that you can access our API.<br><br>
+                    Through CURL Request:<br>
+                    <code>
+                        curl -X "GET" http://www.carpricestool.herokuapp.com/api/results<br>
+                        -H "Content-Type: application/json"<br>
+                        -H "Authorization: Token YOURTOKEN"<br>
+                        -d 'filter1=value1'<br>
+                        -d 'filter2=value2'<br>
+                        -d 'filter3=value3'
+                    </code>
+                    <br><br>
+                    Through URL Request:<br>
+                    <code>
+                        http://www.carpricestool.herokuapp.com/api/cars/results?auth_token=YOURTOKEN&filter1=value1&filter2=value2&filter3=value3
+                    </code>
+                    <br><br>
+                    Following filters are available:<br>
 
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">Filter</th>
-                    <th scope="col">Values or Examples</th>
-                    <th scope="col">Requirements</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>make</td>
-                    <td>eq. 'Kia'</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>state</td>
-                    <td>Used, New (if you don't provide this filter, both will be returned)</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>model</td>
-                    <td>eq. 'Ceed'</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>offer_type</td>
-                    <td>business, person</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>mileage_less_more</td>
-                    <td>mileage_less_than, mileage_more_than</td>
-                    <td>Needs mileage</td>
-                </tr>
-                <tr>
-                    <td>mileage</td>
-                    <td>eq. '125000'</td>
-                    <td>Needs mileage_less_more</td>
-                </tr>
-                <tr>
-                    <td>production_year_less_more</td>
-                    <td>production_year_less_than, production_year_more_than, production_year_exact</td>
-                    <td>Needs production_year</td>
-                </tr>
-                <tr>
-                    <td>production_year</td>
-                    <td>eq. '2018'</td>
-                    <td>Needs production_year_less_more</td>
-                </tr>
-                <tr>
-                    <td>price_less_more</td>
-                    <td>price_less_than, price_more_than</td>
-                    <td>Needs price and price_currency</td>
-                </tr>
-                <tr>
-                    <td>price</td>
-                    <td>eq. '12000'</td>
-                    <td>Needs price_less_more and price_currency</td>
-                </tr>
-                <tr>
-                    <td>price_currency</td>
-                    <td>USD, PLN, EUR</td>
-                    <td>Needs price_less_more and price</td>
-                </tr>
-                <tr>
-                    <td>engine_capacity_less_more</td>
-                    <td>engine_capacity_less_than, engine_capacity_more_than, engine_capacity_equal</td>
-                    <td>Needs engine_capacity</td>
-                </tr>
-                <tr>
-                    <td>engine_capacity</td>
-                    <td>eq. '1.8'</td>
-                    <td>Needs engine_capacity_less_more</td>
-                </tr>
-                <tr>
-                    <td>engine_power_less_more</td>
-                    <td>engine_power_less_than, engine_power_more_than, engine_power_equal</td>
-                    <td>Needs engine_power</td>
-                </tr>
-                <tr>
-                    <td>engine_power</td>
-                    <td>eq. '90'</td>
-                    <td>Needs engine_power_less_more</td>
-                </tr>
-                </tbody>
-            </table>
-            <br><br>
-            Please note that API will return only first 500 cars. If your search is hitting this limit, please narrow it.
-            </p>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Filter</th>
+                        <th scope="col">Values or Examples</th>
+                        <th scope="col">Requirements</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>make</td>
+                        <td>eq. 'Kia'</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>state</td>
+                        <td>Used, New (if you don't provide this filter, both will be returned)</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>model</td>
+                        <td>eq. 'Ceed'</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>offer_type</td>
+                        <td>business, person</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>mileage_less_more</td>
+                        <td>mileage_less_than, mileage_more_than</td>
+                        <td>Needs mileage</td>
+                    </tr>
+                    <tr>
+                        <td>mileage</td>
+                        <td>eq. '125000'</td>
+                        <td>Needs mileage_less_more</td>
+                    </tr>
+                    <tr>
+                        <td>production_year_less_more</td>
+                        <td>production_year_less_than, production_year_more_than, production_year_exact</td>
+                        <td>Needs production_year</td>
+                    </tr>
+                    <tr>
+                        <td>production_year</td>
+                        <td>eq. '2018'</td>
+                        <td>Needs production_year_less_more</td>
+                    </tr>
+                    <tr>
+                        <td>price_less_more</td>
+                        <td>price_less_than, price_more_than</td>
+                        <td>Needs price and price_currency</td>
+                    </tr>
+                    <tr>
+                        <td>price</td>
+                        <td>eq. '12000'</td>
+                        <td>Needs price_less_more and price_currency</td>
+                    </tr>
+                    <tr>
+                        <td>price_currency</td>
+                        <td>USD, PLN, EUR</td>
+                        <td>Needs price_less_more and price</td>
+                    </tr>
+                    <tr>
+                        <td>engine_capacity_less_more</td>
+                        <td>engine_capacity_less_than, engine_capacity_more_than, engine_capacity_equal</td>
+                        <td>Needs engine_capacity</td>
+                    </tr>
+                    <tr>
+                        <td>engine_capacity</td>
+                        <td>eq. '1.8'</td>
+                        <td>Needs engine_capacity_less_more</td>
+                    </tr>
+                    <tr>
+                        <td>engine_power_less_more</td>
+                        <td>engine_power_less_than, engine_power_more_than, engine_power_equal</td>
+                        <td>Needs engine_power</td>
+                    </tr>
+                    <tr>
+                        <td>engine_power</td>
+                        <td>eq. '90'</td>
+                        <td>Needs engine_power_less_more</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br><br>
+                Please note that API will return only first 500 cars. If your search is hitting this limit, please narrow it.
+                </p>
+            </div>
         </div>
     </div>
 

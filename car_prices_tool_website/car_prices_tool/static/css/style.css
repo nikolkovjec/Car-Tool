@@ -23,19 +23,24 @@ input[type="radio"] {
 }
 
 .vertical-center {
-  min-height: 90% !important;  /* Fallback for browsers do NOT support vh unit */
-  min-height: 90vh !important;
-  display: flex !important;
-  align-items: center !important;
+    min-height: 90% !important; /* Fallback for browsers do NOT support vh unit */
+    min-height: 90vh !important;
+    display: flex !important;
+    align-items: center !important;
 }
 
-body > .navbar .btn-outline-danger{
-margin-left: 10px;
-margin-top: 1px;
+.container {
+    margin-top: 100px;
+    margin-bottom: 100px;
 }
 
-body > .navbar .btn-success{
-margin-left: 10px;
+body > .navbar .btn-outline-danger {
+    margin-left: 10px;
+    margin-top: 1px;
+}
+
+body > .navbar .btn-success {
+    margin-left: 10px;
 
 }
 
@@ -43,13 +48,9 @@ margin-left: 10px;
     width: 20vw !important;
 }
 
-
 .navbar-text {
-    float:none;
-    margin:0 auto;
+    float: none;
+    margin: 0 auto;
     display: block;
     text-align: center;
 }
-/*button{*/
-/*margin: 50px !important;*/
-/*}*/

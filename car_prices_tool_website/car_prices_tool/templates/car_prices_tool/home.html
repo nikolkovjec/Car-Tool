@@ -86,15 +86,11 @@
             </div>
             <br><br>
             {% if not user.is_authenticated %}
-                <div class="alert alert-info" role="alert">
-                    To see <b>additional filters</b> please
-                        <a href="{% url 'signup' %}" class="alert-link">Create Free Account Here!</a>
-                </div>
+                <p class="lead">If you are ready for <b>full</b> version, please
+                    <a href="{% url 'signup' %}" role="button">Create Free Account Here!</a>
                     {% else %}
-                <div class="alert alert-success" role="alert">
-                    Use <b>full</b> version with many additional filters
-                        <a href="{% url 'search' %}" class="alert-link">here!</a>
-                </div>
+                <p class="lead">Go for <b>full</b> version
+                    <a href="{% url 'search' %}" role="button">here!</a></p>
             {% endif %}
         </div>
     </div>

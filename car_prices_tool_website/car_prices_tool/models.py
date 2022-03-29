@@ -6,7 +6,7 @@ from django.db.models import JSONField
 class Car(models.Model):
     make = models.CharField(max_length=50)
     model = models.CharField(max_length=50, null=True)
-    model_variant = models.CharField(max_length=100, null=True)
+    model_variant = models.CharField(max_length=50, null=True)
     production_year = models.IntegerField(null=True)
     engine_power = models.IntegerField(null=True)
     mileage = models.IntegerField(null=True)
