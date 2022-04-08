@@ -23,8 +23,8 @@ class TestModels(TestCase):
             price=158790,
             price_currency='PLN',
             state='Used',
-            date_scraped='26/01/2021',
-            date_issued='16/01/2021'
+            date_scraped='2021-02-21',
+            date_issued='2021-02-15'
         )
 
         assert example_car in Car.objects.all()

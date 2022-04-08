@@ -503,11 +503,16 @@ def results(request, context):
 
 # Demo results are called after search from home page.
 def results_demo(request, context):
-    make = context.get('make')
-    state = context.get('state')
-    model = context.get('model')
+    filters = {}
 
-    cars = Car.objects.filter(make=make, model=model, state=state)
+    filters['make'] = context.get('make')
+    filters['model'] = context.get('model')
+
+    if context.get('state') != 'both':
+        filters['state'] = context.get('state')
+
+    # **filters combines all filters provided by user.
+    cars = Car.objects.filter(**filters)
 
     cars_amount = cars.count()
 

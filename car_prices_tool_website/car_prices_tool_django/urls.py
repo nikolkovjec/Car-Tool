@@ -49,5 +49,6 @@ urlpatterns = [
     # Ajax:
     path('ajax/load_models/', views.load_models, name='ajax_load_models'),
 
-    path(r'^__debug__', include(debug_toolbar.urls))
+    # Django Debug Toolbar
+    # path(r'^__debug__', include(debug_toolbar.urls))
 ]
