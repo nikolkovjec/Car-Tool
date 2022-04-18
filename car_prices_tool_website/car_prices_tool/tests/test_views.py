@@ -54,7 +54,7 @@ class TestViews:
             'model': 'Ceed'
         }
 
-        from car_prices_tool.views import results
+        from car_prices_tool.views.price_tools_views import results
         response = results(request, context)
         assert response.status_code == 200
 
@@ -81,7 +81,7 @@ class TestViews:
             'price_currency': 'pln'
         }
 
-        from car_prices_tool.views import results
+        from car_prices_tool.views.price_tools_views import results
         response = results(request, context)
         assert response.status_code == 200
 
@@ -96,7 +96,7 @@ class TestViews:
             'model': 'Ceed'
         }
 
-        from car_prices_tool.views import results
+        from car_prices_tool.views.price_tools_views import results
         response = results(request, context)
         assert response.status_code == 302
 
@@ -111,6 +111,6 @@ class TestViews:
             'model': 'Ceed'
         }
 
-        from car_prices_tool.views import results_demo
+        from car_prices_tool.views.price_tools_views import results_demo
         response = results_demo(request, context)
         assert response.status_code == 200

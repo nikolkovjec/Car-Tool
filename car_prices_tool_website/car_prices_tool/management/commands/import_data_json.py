@@ -16,7 +16,7 @@ class Command(BaseCommand):
     You can call this command by writing 'python manage.py import_data_json'.
     """
 
-    mode = 'test'
+    mode = 'full'
 
     def handle(self, **options):
         if not self.mode:

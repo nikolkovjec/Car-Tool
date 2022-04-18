@@ -13,12 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-import debug_toolbar
 import api
 from api import urls
 from django.contrib import admin
+from django.contrib.auth import views as django_auth_views
 from django.urls import path, include
-from car_prices_tool import views
+from car_prices_tool.views import auth_views, price_tools_views, templates_views, users_views
 
 
 urlpatterns = [
@@ -26,28 +26,28 @@ urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
 
     # Templates:
-    path('', views.home, name='home'),
-    path('about/', views.about, name='about'),
-    path('features/', views.features, name='features'),
-    path('pricing/', views.pricing, name='pricing'),
-    path('search/', views.search, name='search'),
-    path('results/', views.results, name='results'),
-    path('results_demo/', views.results_demo, name='results_demo'),
-    path('no_results/', views.no_results, name='no_results'),
-    path('go_premium/', views.go_premium, name='go_premium'),
-    path('go_api_pro/', views.go_api_pro, name='go_api_pro'),
-    path('api_documentation/', views.api_documentation, name='api_documentation'),
+    path('', templates_views.home, name='home'),
+    path('about/', templates_views.about, name='about'),
+    path('features/', templates_views.features, name='features'),
+    path('pricing/', templates_views.pricing, name='pricing'),
+    path('search/', price_tools_views.search, name='search'),
+    path('results/', price_tools_views.results, name='results'),
+    path('results_demo/', price_tools_views.results_demo, name='results_demo'),
+    path('no_results/', price_tools_views.no_results, name='no_results'),
+    path('go_premium/', users_views.go_premium, name='go_premium'),
+    path('go_api_pro/', users_views.go_api_pro, name='go_api_pro'),
+    path('api_documentation/', templates_views.api_documentation, name='api_documentation'),
 
     # Authorization:
-    path('signup/', views.sign_up_user, name='signup'),
-    path('login/', views.log_in_user, name='login'),
-    path('logout/', views.log_out_user, name='logout'),
+    path('signup/', auth_views.SignUpView.as_view(), name='signup'),
+    path('login/', django_auth_views.LoginView.as_view(), name='login'),
+    path('logout/', django_auth_views.LogoutView.as_view(), name='logout'),
 
     # API:
     path('api/', include(api.urls)),
 
     # Ajax:
-    path('ajax/load_models/', views.load_models, name='ajax_load_models'),
+    path('ajax/load_models/', templates_views.load_models, name='ajax_load_models'),
 
     # Django Debug Toolbar
     # path(r'^__debug__', include(debug_toolbar.urls))

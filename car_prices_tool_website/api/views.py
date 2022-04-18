@@ -64,7 +64,7 @@ def get_token(request):
         else:
             # Make sure that user have correct rank to get token.
             try:
-                user_rank = UserPremiumRank.objects.filter(user=user).values('rank').get()
+                user_rank = UserPremiumRank.objects.filter(user=user, rank='APIPRO').values('rank').get()
             except UserPremiumRank.DoesNotExist:
                 user_rank = {}
 
@@ -112,7 +112,7 @@ class CarsResults(generics.ListAPIView):
         engine_power = self.request.query_params.get('engine_power')
 
         try:
-            user_rank = UserPremiumRank.objects.filter(user=user).values('rank').get()
+            user_rank = UserPremiumRank.objects.filter(user=user, rank='APIPRO').values('rank').get()
         except UserPremiumRank.DoesNotExist:
             user_rank = {}
 
