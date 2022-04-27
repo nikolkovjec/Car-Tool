@@ -1,11 +1,8 @@
-from django import template
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from rest_framework.authtoken.models import Token
 
 from car_prices_tool.models import UserPremiumRank
-
-register = template.Library()
 
 
 @login_required(login_url='login')

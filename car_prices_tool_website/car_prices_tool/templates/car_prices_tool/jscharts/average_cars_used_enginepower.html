@@ -2,7 +2,7 @@
 
 <div class="chartjs-wrapper">
     {{ home_average_cars_used_price_radarchart.data|safe }}
-    <canvas id="average_cars_used_enginepower" class="chartjs" width="500" height="500"></canvas>
+    <canvas id="average_cars_used_enginepower" class="chartjs" width="undefined" height="undefined"></canvas>
     <script>new Chart(document.getElementById("average_cars_used_enginepower"), {
         "type": "radar",
         "data": {

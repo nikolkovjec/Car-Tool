@@ -1,13 +1,9 @@
-from django import template
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
-
-
-register = template.Library()
 
 
 class SignUpView(generic.CreateView):
@@ -21,12 +17,11 @@ class SignUpView(generic.CreateView):
         password = form.cleaned_data.get('password1')
         user = authenticate(username=username, password=password)
         login(self.request, user)
+
         return view
 
     def form_invalid(self, form):
-        user_already_exist = User.objects.filter(username=self.request.POST['username'])
-
-        if user_already_exist:
+        if User.objects.filter(username=self.request.POST['username']):
             context = {
                 'form': UserCreationForm(),
                 'error': 'This username is already taken.'
@@ -40,7 +35,7 @@ class SignUpView(generic.CreateView):
             context = {
                 'form': UserCreationForm(),
                 'error': 'Please make sure that your password have at least 8 characters and '
-                         'that it is not too easy or too common. Your password also cannot be'
+                         'that it is not too easy or too common. Your password also cannot be '
                          'entirely numeric and can not be too similar to your username.'
             }
 

@@ -1,15 +1,12 @@
 from datetime import date
 
 import pendulum
-from django import template
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Avg
 from django.shortcuts import render
 
 from car_prices_tool.forms import SearchCarForm
 from car_prices_tool.models import Car, UserSearchQuery, UserPremiumRank
-
-register = template.Library()
 
 # Current rates of conversion.
 usd_pln = 3.73

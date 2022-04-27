@@ -11,38 +11,36 @@
     </head>
     <body>
 
-    <div class="d-flex justify-content-center">
-        <div class="jumbotron jumbotron-fluid vertical-center">
-            <div class="container">
-                {% if message %}
-                    <h1 class="display-4">
-                        <div class="alert alert-success" role="alert">
-                            {{ message }}
-                        </div>
-                    </h1>
-                    <br><br>
-                {% endif %}
-                {% if user_rank_name == 'Free' or user_rank_name == 'Premium' %}
-                    <p class="lead">
-                        Hello! If you would like to purchase API Pro status for your account and receive your own API
-                        Key / Token please click here:
-                    </p>
-                    <form action="{% url 'go_api_pro' %}" method="post">
-                        {% csrf_token %}
-                        <div style="text-align: center;">
-                            <button type="submit" class="btn btn-primary btn-lg">GO API Pro!</button>
-                        </div>
-                    </form>
-                {% else %}
-                    <div style="text-align: center;">
-                        <p class="lead">
-                            Here is your own API Key / Token:<br>
-                            {{ token }}<br><br>
-                            <a href="{% url 'api_documentation' %}">Read API Documentation</a>
-                        </p>
+    <div class="jumbotron jumbotron-fluid vertical-center">
+        <div class="container">
+            {% if message %}
+                <h1 class="display-4">
+                    <div class="alert alert-success" role="alert">
+                        {{ message }}
                     </div>
-                {% endif %}
-            </div>
+                </h1>
+                <br><br>
+            {% endif %}
+            {% if user_rank_name == 'Free' or user_rank_name == 'Premium' %}
+                <p class="lead">
+                    Hello! If you would like to purchase API Pro status for your account and receive your own API
+                    Key / Token please click here:
+                </p>
+                <form action="{% url 'go_api_pro' %}" method="post">
+                    {% csrf_token %}
+                    <div style="text-align: center;">
+                        <button type="submit" class="btn btn-primary btn-lg">GO API Pro!</button>
+                    </div>
+                </form>
+            {% else %}
+                <div style="text-align: center;">
+                    <p class="lead">
+                        Here is your own API Key / Token:<br>
+                        {{ token }}<br><br>
+                        <a href="{% url 'api_documentation' %}">Read API Documentation</a>
+                    </p>
+                </div>
+            {% endif %}
         </div>
     </div>
 

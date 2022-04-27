@@ -16,7 +16,7 @@ class Command(BaseCommand):
     You can call this command by writing 'python manage.py import_data_json'.
     """
 
-    mode = 'full'
+    mode = 'test'
 
     def handle(self, **options):
         if not self.mode:
@@ -41,7 +41,7 @@ class Command(BaseCommand):
             if self.mode == 'full':
                 self.create_car_object(car)
             elif self.mode == 'test':
-                if random.randint(0, 100) == 1:
+                if random.randint(0, 20) == 1:
                     self.create_car_object(car)
 
         self.stdout.write(self.style.SUCCESS(f'Successfully added new CARS models data in {self.mode} mode!'))

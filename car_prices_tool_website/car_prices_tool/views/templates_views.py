@@ -1,4 +1,3 @@
-from django import template
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from django.shortcuts import render
@@ -7,8 +6,6 @@ from car_prices_tool import all_jscharts
 from car_prices_tool.forms import FreeSearchCarForm
 from car_prices_tool.models import Car
 from car_prices_tool.views.price_tools_views import results_demo
-
-register = template.Library()
 
 
 # Home is also a landing page.
