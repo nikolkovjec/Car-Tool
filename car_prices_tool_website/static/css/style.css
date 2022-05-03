@@ -1,6 +1,7 @@
 @media only screen and (max-width: 600px) {
     .table {
         table-layout:fixed;
+        font-size: 50% !important;
     }
 
     .td {
@@ -8,6 +9,11 @@
         text-overflow: ellipsis;
         word-wrap: break-word;
         overflow-wrap: break-word;
+    }
+
+    .container {
+        margin-top: 0px !important;
+        margin-bottom: 0px !important;
     }
 }
 
@@ -68,7 +74,27 @@ body > .navbar .btn-success {
     text-align: center;
 }
 
+#tires {
+    background: #000000;
+    width: 50px;
+    height: 50px;
+    margin-top: 10px;
+    margin-left: 30px;
+    margin-right: 60px;
+    border-radius: 50%;
+    display: inline-block;
+    overflow: hidden;
+}
+
 .row-chart-js {
   display: flex;
   justify-content: center;
+}
+
+.alert-info {
+    font-size: 1.5rem;
+}
+
+.alert-success {
+    font-size: 1.5rem;
 }

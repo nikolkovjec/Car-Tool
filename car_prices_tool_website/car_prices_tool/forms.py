@@ -13,14 +13,14 @@ class FreeSearchCarForm(forms.Form):
     def generate_makes(self):
         list_makes = [('', '--- select make ---')]
         for make in self.makes:
-            list_makes.append((make["make"], f'{make["make"]} ({Car.objects.filter(make=make["make"]).count()})'))
+            list_makes.append((make["make"], f'{make["make"]}'))
 
         return list_makes
 
     def generate_models(self):
         list_models = [('', '<-- please select make <--')]
         for model in self.models:
-            list_models.append((model["model"], f'{model["model"]} ({Car.objects.filter(model=model["model"]).count()})'))
+            list_models.append((model["model"], f'{model["model"]}'))
 
         return list_models
 
@@ -48,14 +48,14 @@ class SearchCarForm(forms.Form):
     def generate_makes(self):
         list_makes = [('', '--- select make ---')]
         for make in self.makes:
-            list_makes.append((make["make"], f'{make["make"]} ({Car.objects.filter(make=make["make"]).count()})'))
+            list_makes.append((make["make"], f'{make["make"]}'))
 
         return list_makes
 
     def generate_models(self):
         list_models = [('', '<-- please select make <--')]
         for model in self.models:
-            list_models.append((model["model"], f'{model["model"]} ({Car.objects.filter(model=model["model"]).count()})'))
+            list_models.append((model["model"], f'{model["model"]}'))
 
         return list_models
 

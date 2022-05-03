@@ -2,7 +2,7 @@
 
 <div class="chartjs-wrapper">
     {{ home_average_cars_used_price_radarchart.data|safe }}
-    <canvas id="average_cars_used_mileage" class="chartjs" width="undefined" height="undefined"></canvas>
+    <canvas id="average_cars_used_mileage" class="chartjs" width="320" height="320"></canvas>
     <script>new Chart(document.getElementById("average_cars_used_mileage"), {
         "type": "radar",
         "data": {

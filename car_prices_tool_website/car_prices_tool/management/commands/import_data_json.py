@@ -41,7 +41,7 @@ class Command(BaseCommand):
             if self.mode == 'full':
                 self.create_car_object(car)
             elif self.mode == 'test':
-                if random.randint(0, 20) == 1:
+                if random.randint(1, 10) == 1:
                     self.create_car_object(car)
 
         self.stdout.write(self.style.SUCCESS(f'Successfully added new CARS models data in {self.mode} mode!'))
